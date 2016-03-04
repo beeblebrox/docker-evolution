@@ -4,16 +4,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qqy sudo e
 
 VOLUME ["/home/developer"]
 
-ENV uid=1000 gid=1000
-COPY run.sh /
-# Replace 1000 with your user / group id
-RUN mkdir -p /home/developer && \
-    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-    echo "developer:x:${uid}:" >> /etc/group && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-    chmod 0555 run.sh && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    chown ${uid}:${gid} -R /home/developer
+RUN mkdir -p /home/developer
 
-ENTRYPOINT ["/run.sh"]
+ENV HOME=/home/developer
+ENTRYPOINT ["/usr/bin/evolution"]
 
